@@ -25,16 +25,16 @@ type Game struct {
 
 func (g *Game) Update() error {
 	// move the player based on keyboar input (left, right, up down)
-	if ebiten.IsKeyPressed(ebiten.KeyLeft) {
+	if ebiten.IsKeyPressed(ebiten.KeyA) {
 		g.player.X -= 2
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyRight) {
+	if ebiten.IsKeyPressed(ebiten.KeyD) {
 		g.player.X += 2
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyUp) {
+	if ebiten.IsKeyPressed(ebiten.KeyW) {
 		g.player.Y -= 2
 	}
-	if ebiten.IsKeyPressed(ebiten.KeyDown) {
+	if ebiten.IsKeyPressed(ebiten.KeyS) {
 		g.player.Y += 2
 	}
 
@@ -248,4 +248,3 @@ func main() {
 		log.Fatal(err)
 	}
 }
-
