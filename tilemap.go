@@ -3,18 +3,39 @@ package main
 import (
 	"encoding/json"
 	"os"
+	"path"
 )
 
 // data we want for one layer in our list of layers
 type TilemapLayerJSON struct {
-	Data   []int `json:"data"`
-	Width  int   `json:"width"`
-	Height int   `json:"height"`
+	Data   []int  `json:"data"`
+	Width  int    `json:"width"`
+	Height int    `json:"height"`
+	Name   string `json:"name"`
 }
 
 // all layers in a tilemap
 type TilemapJSON struct {
 	Layers []TilemapLayerJSON `json:"layers"`
+	// Tilesets []*TilesetsJSON
+	Tilesets []map[string]any `json:"tilesets"`
+}
+
+func (t *TilemapJSON) GenTilesets() ([]Tileset, error) {
+
+	tilesets := make([]Tileset, 0)
+
+	for _, tilesetData := range t.Tilesets {
+		tilesetPath := path.Join("assets/maps/", tilesetData["source"].(string))
+		tileset, err := NewTileset(tilesetPath, int(tilesetData["firstgid"].(float64)))
+		if err != nil {
+			return nil, err
+		}
+
+		tilesets = append(tilesets, tileset)
+
+	}
+	return tilesets, nil
 }
 
 // opens the file, parses it, and returns the json object + potential error

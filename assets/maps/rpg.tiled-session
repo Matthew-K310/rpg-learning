@@ -16,11 +16,15 @@
             }
         },
         "tilesets/TilesetFloor.tsx": {
+            "dynamicWrapping": false,
             "scaleInDock": 3,
             "scaleInEditor": 4
+        },
+        "tilesets/buildings.json": {
+            "dynamicWrapping": true
         }
     },
-    "last.imagePath": "C:/dev/go/rpg-in-golang/assets/images",
+    "last.imagePath": "/home/matthewuser/Developments/go-learning/rpg-learning/assets/images/buildings",
     "map.height": 80,
     "map.lastUsedFormat": "json",
     "map.tileHeight": 16,
@@ -35,9 +39,10 @@
         "spawn.json",
         "tilesets/TilesetFloor.tsx"
     ],
-    "tileset.lastUsedFormat": "tsx",
+    "tileset.lastUsedFormat": "json",
     "tileset.tileSize": {
         "height": 16,
         "width": 16
-    }
+    },
+    "tileset.type": 1
 }
