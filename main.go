@@ -11,6 +11,7 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/vector"
 
 	"rpg-tutorial/entities"
+	"rpg-tutorial/spritesheet"
 )
 
 func CheckCollisionsHorizontal(sprite *entities.Sprite, colliders []image.Rectangle) {
@@ -51,18 +52,25 @@ func CheckCollisionsVertical(sprite *entities.Sprite, colliders []image.Rectangl
 
 type Game struct {
 	// the image and position variables for our player
-	player      *entities.Player
-	enemies     []*entities.Enemy
-	potions     []*entities.Potion
-	tilemapJSON *TilemapJSON
-	tilesets    []Tileset
-	tilemapImg  *ebiten.Image
-	cam         *Camera
-	colliders   []image.Rectangle
+	player            *entities.Player
+	playerSpriteSheet *spritesheet.SpriteSheet
+	animationFrame    int
+	enemies           []*entities.Enemy
+	potions           []*entities.Potion
+	tilemapJSON       *TilemapJSON
+	tilesets          []Tileset
+	tilemapImg        *ebiten.Image
+	cam               *Camera
+	colliders         []image.Rectangle
 }
 
 func (g *Game) Update() error {
 	// move the player based on keyboar input (left, right, up down)
+
+	g.animationFrame++
+	if g.animationFrame > 5 {
+		g.animationFrame = 0
+	}
 
 	g.player.Dx = 0.0
 	g.player.Dy = 0.0
@@ -181,7 +189,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	screen.DrawImage(
 		// grab a subimage of the spritesheet
 		g.player.Img.SubImage(
-			image.Rect(0, 0, 16, 16),
+			g.playerSpriteSheet.Rect(g.animationFrame),
 		).(*ebiten.Image),
 		&opts,
 	)
@@ -276,6 +284,8 @@ func main() {
 		log.Fatal(err)
 	}
 
+	playerSpriteSheet := spritesheet.NewSpritesheet(4, 7, 16)
+
 	game := Game{
 		player: &entities.Player{
 			Sprite: &entities.Sprite{
@@ -285,6 +295,7 @@ func main() {
 			},
 			Health: 3,
 		},
+		playerSpriteSheet: playerSpriteSheet,
 		enemies: []*entities.Enemy{
 			{
 				Sprite: &entities.Sprite{
